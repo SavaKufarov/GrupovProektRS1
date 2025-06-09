@@ -1,0 +1,128 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
+}
+
+
+<div class="container">
+    <h1 class="title">Expense Tracker</h1>
+
+    <!-- Tab Navigation -->
+    <div class="tabs">
+        <button class="tab-button active" onclick="showView('month')">
+            <i class="fas fa-calendar-alt"></i> Month View
+        </button>
+        <button class="tab-button" onclick="showView('week')">
+            <i class="fas fa-calendar-week"></i> Week View
+        </button>
+    </div>
+
+    <!-- Month View -->
+    <div id="month-view" class="view active">
+        <div class="view-header">
+            <h2>Monthly Expenses</h2>
+            <div class="total-expense">
+                <span class="total-label">Total:</span>
+                <span class="total-amount">$185.00</span>
+            </div>
+        </div>
+        <div class="expense-grid">
+            <div class="expense-card">
+                <div class="expense-header">
+                    <div class="expense-date-category">
+                        <div class="expense-date">01 Jun 2025</div>
+                        <div class="expense-category-badge food">Food</div>
+                    </div>
+                    <div class="expense-amount">$45.00</div>
+                </div>
+                <div class="expense-description">Dinner at restaurant</div>
+                <div class="expense-actions">
+                    <button class="action-btn edit"><i class="fas fa-pencil-alt"></i></button>
+                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+            <div class="expense-card">
+                <div class="expense-header">
+                    <div class="expense-date-category">
+                        <div class="expense-date">05 Jun 2025</div>
+                        <div class="expense-category-badge transport">Transport</div>
+                    </div>
+                    <div class="expense-amount">$20.00</div>
+                </div>
+                <div class="expense-description">Taxi to work</div>
+                <div class="expense-actions">
+                    <button class="action-btn edit"><i class="fas fa-pencil-alt"></i></button>
+                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+            <div class="expense-card">
+                <div class="expense-header">
+                    <div class="expense-date-category">
+                        <div class="expense-date">10 Jun 2025</div>
+                        <div class="expense-category-badge utilities">Utilities</div>
+                    </div>
+                    <div class="expense-amount">$120.00</div>
+                </div>
+                <div class="expense-description">Electricity bill</div>
+                <div class="expense-actions">
+                    <button class="action-btn edit"><i class="fas fa-pencil-alt"></i></button>
+                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+            <div class="add-expense-card">
+                <button class="add-expense-btn">
+                    <i class="fas fa-plus"></i> Add Expense
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Week View -->
+    <div id="week-view" class="view">
+        <div class="view-header">
+            <h2>Weekly Expenses</h2>
+            <div class="total-expense">
+                <span class="total-label">Total:</span>
+                <span class="total-amount">$105.00</span>
+            </div>
+        </div>
+        <div class="expense-grid">
+            <div class="expense-card">
+                <div class="expense-header">
+                    <div class="expense-date-category">
+                        <div class="expense-date">01 Jun 2025</div>
+                        <div class="expense-category-badge food">Food</div>
+                    </div>
+                    <div class="expense-amount">$45.00</div>
+                </div>
+                <div class="expense-description">Dinner at restaurant</div>
+                <div class="expense-actions">
+                    <button class="action-btn edit"><i class="fas fa-pencil-alt"></i></button>
+                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+            <div class="expense-card">
+                <div class="expense-header">
+                    <div class="expense-date-category">
+                        <div class="expense-date">02 Jun 2025</div>
+                        <div class="expense-category-badge groceries">Groceries</div>
+                    </div>
+                    <div class="expense-amount">$60.00</div>
+                </div>
+                <div class="expense-description">Weekly shopping</div>
+                <div class="expense-actions">
+                    <button class="action-btn edit"><i class="fas fa-pencil-alt"></i></button>
+                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+            <div class="add-expense-card">
+                <button class="add-expense-btn">
+                    <i class="fas fa-plus"></i> Add Expense
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
