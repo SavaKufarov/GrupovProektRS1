@@ -1,0 +1,118 @@
+﻿
+@{
+    ViewData["Title"] = "Account Access";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/auth.css">
+    <style>
+        /* Hide signup form by default */
+        #signupForm {
+            display: none;
+        }
+    </style>
+}
+
+<div class="container py-5">
+    <div class="auth-container">
+        <!-- Toggle Buttons -->
+        <div class="auth-toggle">
+            <button class="auth-toggle-btn active" id="loginToggle">Login</button>
+            <button class="auth-toggle-btn" id="signupToggle">Sign Up</button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="loginForm" method="post" asp-action="Login">
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="loginEmail" name="email" placeholder="name@example.com" required>
+                <label for="loginEmail">Email address</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="loginPassword" name="password" placeholder="Password" required>
+                <label for="loginPassword">Password</label>
+            </div>
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="rememberMe" name="rememberMe">
+                <label class="form-check-label" for="rememberMe">Remember me</label>
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+            <div class="text-center mt-3">
+                <a href="#" class="text-decoration-none">Forgot password?</a>
+            </div>
+        </form>
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <p>@error.ErrorMessage</p>
+                }
+            </div>
+        }
+        <!-- Signup Form -->
+        <form id="signupForm" method="post" asp-controller="SignUp" asp-action="Register">
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="signupName" name="username" placeholder="Username" required>
+                <label for="signupName">Username</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="signupEmail" name="email" placeholder="name@example.com" required>
+                <label for="signupEmail">Email address</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="signupPassword" name="password" placeholder="Password" required>
+                <label for="signupPassword">Password</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="signupConfirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
+                <label for="signupConfirmPassword">Confirm Password</label>
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary">Sign Up</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Initialize forms on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show login form and hide signup form initially
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('signupForm').style.display = 'none';
+
+            // Set active button
+            document.getElementById('loginToggle').classList.add('active');
+            document.getElementById('signupToggle').classList.remove('active');
+        });
+
+        // Toggle between forms
+        document.getElementById('loginToggle').addEventListener('click', function() {
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('signupForm').style.display = 'none';
+            this.classList.add('active');
+            document.getElementById('signupToggle').classList.remove('active');
+        });
+
+        document.getElementById('signupToggle').addEventListener('click', function() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('signupForm').style.display = 'block';
+            this.classList.add('active');
+            document.getElementById('loginToggle').classList.remove('active');
+        });
+
+        // Password confirmation validation
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                alert('Passwords do not match!');
+                document.getElementById('signupConfirmPassword').focus();
+            }
+        });
+    </script>
+}

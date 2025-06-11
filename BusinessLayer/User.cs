@@ -18,5 +18,13 @@ namespace BusinessLayer
             UserName = userName;
             PasswordHash = password;
         }
+
+        public User(string userName, string email)
+        {
+
+            Email = email;
+            UserName = userName;
+
+        }
     }
 }

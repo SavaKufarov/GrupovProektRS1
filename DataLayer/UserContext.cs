@@ -1,82 +1,132 @@
 ﻿using BusinessLayer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace DataLayer
 {
-    public class UserContext : DbContext, IDb<User, int>
+    public class UserContext
     {
-        public DbSet<User> Users { get; set; }
-        private ExpenseTrackerDbContext dbContext;
+        UserManager<User> _userManager;
+        ExpenseTrackerDbContext _context;
 
-
-        // **Create**
-        public void Create(User user)
+        public UserContext(ExpenseTrackerDbContext context, UserManager<User> userManager)
         {
-            Users.Add(user);
-            SaveChanges();
+            this._context = context;
+            this._userManager = userManager;
         }
 
-        // **Read (Single User by Key)**
-        public User Read(int key, bool useNavigationalProperties = false, bool isReadOnly = false)
+        #region CRUD
+
+        public async Task CreateUserAsync(User user, string password)
         {
-            IQueryable<User> query = dbContext.Users;
-            if (useNavigationalProperties)
+            try
             {
+                IdentityResult result = await _userManager.CreateAsync(user, password);
+
+                if (!result.Succeeded)
+                {
+                    throw new ArgumentException(result.Errors.First().Description);
+                }
 
             }
-            if (isReadOnly)
+            catch (Exception ex)
             {
-                query = query.AsNoTrackingWithIdentityResolution();
-            }
-            User user = query.FirstOrDefault(f => f.Id == key);
-            if (user == null)
-            {
-                throw new Exception("District not found!");
-            }
-            return user; ;
-        }
-
-        // **ReadAll**
-        public List<User> ReadAll(bool useNavigationalProperties = false, bool isReadOnly = false)
-        {
-            var query = Users.AsQueryable();
-
-            if (useNavigationalProperties)
-            {
-                // Include related entities if needed
-            }
-
-            if (isReadOnly)
-            {
-                query = query.AsNoTracking();
-            }
-
-            return query.ToList();
-        }
-
-        // **Update**
-        public void Update(User user, bool useNavigationalProperties = false)
-        {
-            var existingUser = Users.Find(user.Id);
-            if (existingUser != null)
-            {
-                existingUser.UserName = user.UserName;
-                existingUser.Email = user.Email;
-                SaveChanges();
+                throw new Exception(ex.Message);
             }
         }
 
-        // **Delete**
-        public void Delete(int key)
+        public async Task<User> LogInUserAsync(string email, string password)
         {
-            var user = Users.Find(key);
-            if (user != null)
+            try
             {
-                Users.Remove(user);
-                SaveChanges();
+                User user = await _userManager.FindByEmailAsync(email);
+
+                if (user == null)
+                {
+                    return null;
+                }
+
+                IdentityResult result =
+                    await _userManager.PasswordValidators[1].ValidateAsync(_userManager, user, password);
+
+                if (result.Succeeded)
+                {
+                    return await _context.Users.FindAsync(user.Id);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
+
+        public async Task<User> ReadUserAsync(string key)
+        {
+            try
+            {
+                return await _userManager.FindByIdAsync(key);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<User>> ReadAllUsersAsync()
+        {
+            try
+            {
+                return await _context.Users.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+     
+        public async Task DeleteUserByNameAsync(string name)
+        {
+            try
+            {
+                User user = await FindUserByNEmailAsync(name);
+
+                if (user == null)
+                {
+                    throw new InvalidOperationException("User not found for deletion!");
+                }
+
+                await _userManager.DeleteAsync(user);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<User> FindUserByNEmailAsync(string name)
+        {
+            try
+            {
+                // Identity return Null if there is no user!
+                return await _userManager.FindByEmailAsync(name);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #endregion
     }
 }
