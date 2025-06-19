@@ -6,7 +6,11 @@ namespace DataLayer
 {
     public class ExpenseTrackerDbContext : IdentityDbContext<User>
     {
+
         public DbSet<Expense> Expenses { get; set; }
+        public DbSet<Expense> Categories { get; set; }
+        public DbSet<Expense> Budgets { get; set; }
+
         public ExpenseTrackerDbContext() : base()
         { }
         public ExpenseTrackerDbContext(DbContextOptions<ExpenseTrackerDbContext> options)
