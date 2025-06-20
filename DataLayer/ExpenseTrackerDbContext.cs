@@ -8,8 +8,8 @@ namespace DataLayer
     {
 
         public DbSet<Expense> Expenses { get; set; }
-        public DbSet<Expense> Categories { get; set; }
-        public DbSet<Expense> Budgets { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Note> Notes { get; set; }
 
         public ExpenseTrackerDbContext() : base()
         { }

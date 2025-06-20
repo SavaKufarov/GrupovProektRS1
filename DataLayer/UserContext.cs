@@ -46,29 +46,21 @@ namespace DataLayer
             try
             {
                 User user = await _userManager.FindByEmailAsync(email);
-
                 if (user == null)
                 {
                     return null;
                 }
 
-                IdentityResult result =
-                    await _userManager.PasswordValidators[1].ValidateAsync(_userManager, user, password);
-
-                if (result.Succeeded)
-                {
-                    return await _context.Users.FindAsync(user.Id);
-                }
-                else
-                {
-                    return null;
-                }
+                // Проверка на паролата с правилния метод
+                var passwordValid = await _userManager.CheckPasswordAsync(user, password);
+                return passwordValid ? user : null;
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw new Exception("Error during Login", ex);
             }
         }
+
 
         public async Task<User> ReadUserAsync(string key)
         {
@@ -127,6 +119,7 @@ namespace DataLayer
             }
         }
 
-        #endregion
     }
+
+    #endregion
 }

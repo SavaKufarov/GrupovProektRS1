@@ -34,7 +34,7 @@ namespace DataLayer
             Category Category = query.FirstOrDefault(f => f.Id == id);
             if (Category == null)
             {
-                throw new Exception("District not found!");
+                throw new Exception("Category not found!");
             }
             return Category;
         }
@@ -60,15 +60,15 @@ namespace DataLayer
         }
         public void Delete(int id)
         {
-            Category district = dbContext.Categories.Find(id);
-            if (district != null)
+            Category category = dbContext.Categories.Find(id);
+            if (category != null)
             {
-                dbContext.Categories.Remove(district);
+                dbContext.Categories.Remove(category);
                 dbContext.SaveChanges();
             }
             else
             {
-                throw new Exception("District not found!");
+                throw new Exception("Category not found!");
             }
         }
     }

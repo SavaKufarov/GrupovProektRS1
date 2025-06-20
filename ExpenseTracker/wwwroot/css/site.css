@@ -62,7 +62,7 @@ body {
 }
 
 .nav-link {
-    color: #4a5568;
+    color: black;
     text-decoration: none;
     font-weight: 500;
     padding: 0.5rem 0;
@@ -96,3 +96,28 @@ body {
         .nav-link.active::after {
             width: 100%;
         }
+
+.navbar-text {
+    color: black;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    margin-left: 1rem;
+    border-left: 1px solid #e2e8f0;
+}
+
+/* Logout button styles */
+.btn-outline-danger {
+    border-color: #dc3545;
+    color: #dc3545;
+    transition: all 0.3s ease;
+}
+
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+
+/* Icon spacing */
+.fas.fa-sign-out-alt {
+    margin-right: 5px;
+}

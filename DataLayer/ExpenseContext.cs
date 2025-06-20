@@ -34,7 +34,7 @@ namespace DataLayer
             Expense expense = query.FirstOrDefault(f => f.Id == id);
             if (expense == null)
             {
-                throw new Exception("District not found!");
+                throw new Exception("Expense not found!");
             }
             return expense;
         }
@@ -60,15 +60,15 @@ namespace DataLayer
         }
         public void Delete(int id)
         {
-            Expense district = dbContext.Expenses.Find(id);
-            if (district != null)
+            Expense expense = dbContext.Expenses.Find(id);
+            if (expense != null)
             {
-                dbContext.Expenses.Remove(district);
+                dbContext.Expenses.Remove(expense);
                 dbContext.SaveChanges();
             }
             else
             {
-                throw new Exception("District not found!");
+                throw new Exception("Expense not found!");
             }
         }
     }

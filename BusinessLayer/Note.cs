@@ -7,19 +7,19 @@ using System.Threading.Tasks;
 
 namespace BusinessLayer
 {
-    public class Budget
+    public class Note
     {
+        [Key]
         public int Id { get; set; }
 
         [Range(0.01, double.MaxValue)]
-        public decimal Amount { get; set; }
-        public DateTime Month { get; set; } // Set to first day of the month for consistency
+        public decimal Budget { get; set; }
+        public string Description { get; set; } 
 
         // Foreign keys
-        public int UserId { get; set; }
         public User User { get; set; }
 
-        public int? CategoryId { get; set; } // Optional: budget for a specific category
-        public Category Category { get; set; }
+        public Expense Expense { get; set; }
+
     }
 }

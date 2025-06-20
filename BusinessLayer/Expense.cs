@@ -9,6 +9,7 @@ namespace BusinessLayer
 {
     public class Expense
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -18,5 +19,11 @@ namespace BusinessLayer
         public decimal Amount { get; set; }
 
         public DateTime Date { get; set; } = DateTime.Now;
+
+        // Foreign key
+        public int CategoryId { get; set; }
+
+        // Navigation property
+        public Category Category { get; set; }
     }
 }

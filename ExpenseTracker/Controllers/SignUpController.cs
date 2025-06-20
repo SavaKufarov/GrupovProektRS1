@@ -9,10 +9,12 @@ namespace ExpenseTracker.Controllers
     public class SignUpController : Controller
     {
         private readonly UserContext _userContext;
+        private readonly SignInManager<User> _signInManager;
 
-        public SignUpController(UserContext userContext)
+        public SignUpController(UserContext userContext, SignInManager<User> signInManager)
         {
             _userContext = userContext;
+            _signInManager = signInManager;
         }
 
         [HttpGet]
@@ -73,34 +75,60 @@ namespace ExpenseTracker.Controllers
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
                 ModelState.AddModelError("", "Email and password are required.");
-                return View("SignUp"); // Or redirect to login page
+                return View("SignUp");
             }
 
             try
             {
-                // Find user by email
-               
-
-                // Attempt to sign in
-                var result = await _userContext.LogInUserAsync(email, password);
-
-                if (result.Succeeded)
+                var user = await _userContext.FindUserByNEmailAsync(email);
+                if (user == null)
                 {
-                    // Redirect to home page or dashboard
+                    ModelState.AddModelError("email", "User not found.");
+                    return View("SignUp");
+                }
+
+                var signInResult = await _userContext.LogInUserAsync(email, password);
+
+                if (signInResult != null)
+                {
+                    // Store user's name in a cookie
+                    var cookieOptions = new CookieOptions
+                    {
+                        Expires = rememberMe ? DateTime.Now.AddDays(30) : DateTime.Now.AddMinutes(30),
+                        HttpOnly = true,
+                        Secure = true,
+                        SameSite = SameSiteMode.Strict
+                    };
+
+                    Response.Cookies.Append("UserName", user.UserName, cookieOptions);
+
                     return RedirectToAction("Index", "Home");
                 }
                 else
                 {
                     ModelState.AddModelError("password", "Invalid email or password.");
-                    return View("SignUp"); // Or redirect to login page
+                    return View("SignUp");
                 }
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "An error occurred during login.");
-                // Log the exception
-                return View("SignUp"); // Or redirect to login page
+                ModelState.AddModelError("", $"An error occurred during login: {ex.Message}");
+                return View("SignUp");
             }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            // Sign out the user
+            await _signInManager.SignOutAsync();
+
+            // Clear the user name cookie
+            Response.Cookies.Delete("UserName");
+
+            // Redirect to home page
+            return RedirectToAction("Index", "Home");
         }
     }
 }
