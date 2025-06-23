@@ -16,13 +16,13 @@ namespace ExpenseTracker.Controllers
             _categoryContext = new CategoryContext(dbContext);
         }
 
-        // GET: Category/Index
+        
         public IActionResult Category()
         {
             return View("Category");
         }
 
-        // GET: Category/GetAll
+        
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -37,7 +37,7 @@ namespace ExpenseTracker.Controllers
             }
         }
 
-        // GET: Category/GetById/5
+        
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -56,7 +56,7 @@ namespace ExpenseTracker.Controllers
             }
         }
 
-        // POST: Category/Create
+        
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Category category)
         {
@@ -81,7 +81,7 @@ namespace ExpenseTracker.Controllers
             }
         }
 
-        // PUT: Category/Update/5
+        
         [HttpPut("{id}")]
         [Route("Category/Update/{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] Category category)
@@ -113,7 +113,7 @@ namespace ExpenseTracker.Controllers
             }
         }
 
-        // DELETE: Category/Delete/5
+        
         [HttpDelete("{id}")]
         [Route("Category/Delete/{id}")]
         public IActionResult Delete(int id)

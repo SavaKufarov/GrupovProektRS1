@@ -1,0 +1,284 @@
+﻿@using System.Text.Json
+@model BusinessLayer.Expense
+
+@{
+    ViewData["Title"] = "Add New Expense";
+}
+
+<div class="expense-container">
+    <div class="expense-card">
+        <h1 class="expense-title">Add New Expense</h1>
+        <div class="expense-form-container">
+            <form asp-action="Create" class="expense-form">
+                <div asp-validation-summary="ModelOnly" class="form-error-summary"></div>
+
+                <div class="form-group">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-input" placeholder="Enter expense name" />
+                    <span asp-validation-for="Name" class="form-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Amount" class="form-label"></label>
+                    <div class="amount-input-container">
+                        <span class="currency-symbol">$</span>
+                        <input asp-for="Amount" class="form-input amount-input" placeholder="0.00" type="number" step="0.01" />
+                    </div>
+                    <span asp-validation-for="Amount" class="form-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Date" class="form-label"></label>
+                    <input asp-for="Date" class="form-input date-input" type="date" />
+                    <span asp-validation-for="Date" class="form-error"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="CategoryId" class="form-label">Category</label>
+                    <select asp-for="CategoryId" class="form-input select-input" asp-items="ViewBag.Categories">
+                        <option value="">-- Select Category --</option>
+                        @{
+							var Categories = JsonSerializer.Deserialize<List<string>>(ViewBag.Categories.ToString());
+                        }
+                                @foreach (var item in Categories)
+                                {
+                            <option value="@item">@item</option>
+                                }
+                    </select>
+                    <div class="select-arrow"></div>
+                    <span asp-validation-for="CategoryId" class="form-error"></span>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="submit-btn">
+                        <span class="btn-text">Add Expense</span>
+                        <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z" fill="currentColor" />
+                        </svg>
+                    </button>
+                    <a asp-action="Index" class="cancel-link">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --primary-hover: #3a56d4;
+            --text-color: #2b2d42;
+            --light-text: #8d99ae;
+            --border-color: #e9ecef;
+            --error-color: #ef233c;
+            --background: #f8f9fa;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --input-focus: 0 0 0 3px rgba(67, 97, 238, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-color);
+            background-color: var(--background);
+            line-height: 1.5;
+        }
+
+        .expense-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .expense-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            width: 100%;
+            max-width: 500px;
+            padding: 2.5rem;
+        }
+
+        .expense-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            background-color: white;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: var(--input-focus);
+        }
+
+        .form-input::placeholder {
+            color: var(--light-text);
+            opacity: 0.6;
+        }
+
+        .amount-input-container {
+            position: relative;
+        }
+
+        .currency-symbol {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: 500;
+            color: var(--text-color);
+        }
+
+        .amount-input {
+            padding-left: 2rem;
+        }
+
+        .date-input {
+            cursor: pointer;
+        }
+
+        .select-input {
+            appearance: none;
+            cursor: pointer;
+            background-image: none;
+            padding-right: 2.5rem;
+        }
+
+        .select-arrow {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid var(--light-text);
+            pointer-events: none;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .submit-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-text {
+            margin-right: 0.5rem;
+        }
+
+        .btn-icon {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        .cancel-link {
+            color: var(--light-text);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.2s ease;
+        }
+
+        .cancel-link:hover {
+            color: var(--text-color);
+        }
+
+        .form-error {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--error-color);
+            margin-top: 0.25rem;
+        }
+
+        .form-error-summary {
+            color: var(--error-color);
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            background-color: rgba(239, 35, 60, 0.05);
+            border-radius: 8px;
+        }
+
+        @@media (max-width: 576px) {
+            .expense-card {
+                padding: 1.5rem;
+            }
+
+            .expense-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateInput = document.querySelector('.date-input');
+            if (dateInput && !dateInput.value) {
+                const today = new Date();
+                const formattedDate = today.toISOString().split('T')[0];
+                dateInput.value = formattedDate;
+            }
+        });
+    </script>
+}

@@ -20,10 +20,10 @@ namespace BusinessLayer
 
         public DateTime Date { get; set; } = DateTime.Now;
 
-        // Foreign key
+        
         public int CategoryId { get; set; }
 
-        // Navigation property
+        
         public Category Category { get; set; }
     }
 }
