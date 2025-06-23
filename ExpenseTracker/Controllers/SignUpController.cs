@@ -26,7 +26,7 @@ namespace ExpenseTracker.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(string username, string email, string password, string confirmPassword)
         {
-            // Validate inputs
+            
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(email) ||
                 string.IsNullOrEmpty(password) || string.IsNullOrEmpty(confirmPassword))
             {
@@ -42,7 +42,7 @@ namespace ExpenseTracker.Controllers
 
             try
             {
-                // Check if user already exists
+                
                 var existingUser = await _userContext.FindUserByNEmailAsync(email);
                 if (existingUser != null)
                 {
@@ -50,17 +50,17 @@ namespace ExpenseTracker.Controllers
                     return View("SignUp");
                 }
 
-                // Create new user
+                
                 var user = new User
                 {
                     UserName = username,
                     Email = email,
-                    EmailConfirmed = true // Set to true if you're not implementing email confirmation
+                    EmailConfirmed = true 
                 };
 
                 await _userContext.CreateUserAsync(user, password);
 
-                // Redirect to success page or login page
+                
                 return View("SignUp");
             }
             catch (Exception ex)
@@ -91,7 +91,7 @@ namespace ExpenseTracker.Controllers
 
                 if (signInResult != null)
                 {
-                    // Store user's name in a cookie
+                    
                     var cookieOptions = new CookieOptions
                     {
                         Expires = rememberMe ? DateTime.Now.AddDays(30) : DateTime.Now.AddMinutes(30),
@@ -121,13 +121,13 @@ namespace ExpenseTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
-            // Sign out the user
+            
             await _signInManager.SignOutAsync();
 
-            // Clear the user name cookie
+            
             Response.Cookies.Delete("UserName");
 
-            // Redirect to home page
+            
             return RedirectToAction("Index", "Home");
         }
     }

@@ -16,7 +16,7 @@ namespace BusinessLayer
         public decimal Budget { get; set; }
         public string Description { get; set; } 
 
-        // Foreign keys
+        
         public User User { get; set; }
 
         public Expense Expense { get; set; }
