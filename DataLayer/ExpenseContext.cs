@@ -55,7 +55,10 @@ namespace DataLayer
         {
             Expense expenseFromContext = dbContext.Expenses.Find(expense.Id);
             expenseFromContext.Name = expense.Name;
-            
+            expenseFromContext.Amount = expense.Amount;
+            expenseFromContext.Date = expense.Date;
+            expenseFromContext.CategoryId = expense.CategoryId;
+
             dbContext.SaveChanges();
         }
         public void Delete(int id)

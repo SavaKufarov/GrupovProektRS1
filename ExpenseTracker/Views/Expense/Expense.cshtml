@@ -9,7 +9,7 @@
     <div class="expense-card">
         <h1 class="expense-title">Add New Expense</h1>
         <div class="expense-form-container">
-            <form asp-action="Create" class="expense-form">
+            <form asp-action="Expense" class="expense-form" method="post">
                 <div asp-validation-summary="ModelOnly" class="form-error-summary"></div>
 
                 <div class="form-group">
@@ -35,15 +35,9 @@
 
                 <div class="form-group">
                     <label asp-for="CategoryId" class="form-label">Category</label>
-                    <select asp-for="CategoryId" class="form-input select-input" asp-items="ViewBag.Categories">
+                    <select asp-for="CategoryId" class="form-input select-input"
+                            asp-items="@(ViewBag.Categories as SelectList)">
                         <option value="">-- Select Category --</option>
-                        @{
-							var Categories = JsonSerializer.Deserialize<List<string>>(ViewBag.Categories.ToString());
-                        }
-                                @foreach (var item in Categories)
-                                {
-                            <option value="@item">@item</option>
-                                }
                     </select>
                     <div class="select-arrow"></div>
                     <span asp-validation-for="CategoryId" class="form-error"></span>
@@ -181,7 +175,7 @@
         .select-arrow {
             position: absolute;
             right: 1rem;
-            top: 50%;
+            top: 70%;
             transform: translateY(-50%);
             width: 0;
             height: 0;

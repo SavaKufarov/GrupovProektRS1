@@ -2,6 +2,7 @@
 using DataLayer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Text.Json;
@@ -21,37 +22,49 @@ namespace ExpenseTracker.Controllers
             _categoryContext = categoryContext;
         }
 
-        
+
         public IActionResult Expense()
         {
             var categories = _categoryContext.ReadAll();
             List<string> categoryNames = categories.Select(c => c.Name).ToList();
-            ViewBag.Categories = JsonSerializer.Serialize(categoryNames);
+            ViewBag.CategoriesJson = JsonSerializer.Serialize(categoryNames);
+            ViewBag.Categories = new SelectList(categories, "Id", "Name"); 
             return View();
         }
 
-        
-        public IActionResult Create()
-        {
-            LoadCategories();
-            return View();
-        }
 
-        
+
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Id,Name,Amount,Date,CategoryId")] Expense expense)
+       
+        public IActionResult Expense(Expense expense) 
         {
             if (ModelState.IsValid)
             {
-                _expenseContext.Create(expense);
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                  
+
+                    if (expense.Date == default)
+                    {
+                        expense.Date = DateTime.Now;
+                    }
+
+                    _expenseContext.Create(expense);
+
+                    TempData["SuccessMessage"] = "Expense added successfully!";
+                    return RedirectToAction("Index","Home");
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError("", "An error occurred while saving the expense: " + ex.Message);
+                }
             }
-            LoadCategories();
-            return View(expense);
+
+           
+            return View();
         }
 
-        
+
         public IActionResult Edit(int id)
         {
             var expense = _expenseContext.Read(id, useNavigationalProperties: true);
@@ -65,7 +78,7 @@ namespace ExpenseTracker.Controllers
 
         
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        
         public IActionResult Edit(int id, [Bind("Id,Name,Amount,Date,CategoryId")] Expense expense)
         {
             if (id != expense.Id)
@@ -110,7 +123,7 @@ namespace ExpenseTracker.Controllers
 
         
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+       
         public IActionResult DeleteConfirmed(int id)
         {
             _expenseContext.Delete(id);

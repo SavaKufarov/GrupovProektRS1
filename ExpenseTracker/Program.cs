@@ -41,6 +41,7 @@ namespace ExpenseTracker
             builder.Services.AddScoped<UserContext>();
             builder.Services.AddScoped<ExpenseContext>();
             builder.Services.AddScoped<CategoryContext>();
+            builder.Services.AddScoped<NoteContext>();
 
 
             builder.Services.AddSession();

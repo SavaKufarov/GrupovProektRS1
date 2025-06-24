@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="~/css/home.css" asp-append-version="true" />
 }
 
-
 <div class="container">
     <h1 class="title">Expense Tracker</h1>
 
@@ -23,126 +22,155 @@
     <!-- Month View -->
     <div id="month-view" class="view active">
         <div class="view-header">
-            <h2>Monthly Expenses</h2>
+            <h2>@ViewBag.CurrentMonth Expenses</h2>
             <div class="total-expense">
                 <span class="total-label">Total:</span>
-                <span class="total-amount">$185.00</span>
+                <span class="total-amount">@ViewBag.MonthTotal.ToString("C")</span>
             </div>
         </div>
+
         <div class="expense-grid">
-            <div class="expense-card">
-                <div class="expense-header">
-                    <div class="expense-date-category">
-                        <div class="expense-date">01 Jun 2025</div>
-                        <div class="expense-category-badge food">Food</div>
+            @foreach (var item in ViewBag.MonthExpenses)
+            {
+                <div class="expense-card">
+                    <div class="expense-header">
+                        <div class="expense-date-category">
+                            <div class="expense-date">@item.Expense.Date.ToString("dd MMM yyyy")</div>
+                            <div class="expense-category-badge @item.CategoryName.ToLower().Replace(" ", "-")">@item.CategoryName</div>
+                        </div>
+                        <div class="expense-amount">@item.Expense.Amount.ToString("C")</div>
                     </div>
-                    <div class="expense-amount">$45.00</div>
-                </div>
-                <div class="expense-description">Dinner at restaurant</div>
-                <div class="expense-actions">
-                    <button class="action-btn edit"><i class="fas fa-pencil-alt"></i></button>
-                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
-                </div>
-            </div>
-            <div class="expense-card">
-                <div class="expense-header">
-                    <div class="expense-date-category">
-                        <div class="expense-date">05 Jun 2025</div>
-                        <div class="expense-category-badge transport">Transport</div>
+                    <div class="expense-description">@item.Expense.Name</div>
+                    <div class="expense-actions">
+                        <button class="action-btn edit" onclick="openEdit()"><i class="fas fa-pencil-alt"></i></button>
+                        <button class="action-btn note" onclick="openNoteModal(@item.Expense.Id)"><i class="fas fa-sticky-note"></i></button>
+                        <button class="action-btn delete" data-id="@item.Expense.Id"><i class="fas fa-trash"></i></button>
                     </div>
-                    <div class="expense-amount">$20.00</div>
                 </div>
-                <div class="expense-description">Taxi to work</div>
-                <div class="expense-actions">
-                    <button class="action-btn edit"><i class="fas fa-pencil-alt"></i></button>
-                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
+            }
+
+            @if (ViewBag.MonthExpenses.Count == 0)
+            {
+                <div class="no-expenses">
+                    No expenses recorded for this month.
                 </div>
-            </div>
-            <div class="expense-card">
-                <div class="expense-header">
-                    <div class="expense-date-category">
-                        <div class="expense-date">10 Jun 2025</div>
-                        <div class="expense-category-badge utilities">Utilities</div>
-                    </div>
-                    <div class="expense-amount">$120.00</div>
-                </div>
-                <div class="expense-description">Electricity bill</div>
-                <div class="expense-actions">
-                    <button class="action-btn note" onclick="openNoteModal()">
-                        <i class="fas fa-sticky-note"></i>
-                    </button>
-                    <button class="action-btn edit"><i class="fas fa-pencil-alt"></i></button>
-                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
-                </div>
-            </div>
+            }
         </div>
     </div>
 
     <!-- Week View -->
     <div id="week-view" class="view">
         <div class="view-header">
-            <h2>Weekly Expenses</h2>
+            <h2>Week of @ViewBag.CurrentWeek</h2>
             <div class="total-expense">
                 <span class="total-label">Total:</span>
-                <span class="total-amount">$105.00</span>
+                <span class="total-amount">@ViewBag.WeekTotal.ToString("C")</span>
             </div>
         </div>
         <div class="expense-grid">
-            <div class="expense-card">
-                <div class="expense-header">
-                    <div class="expense-date-category">
-                        <div class="expense-date">01 Jun 2025</div>
-                        <div class="expense-category-badge food">Food</div>
+            @foreach (var item in ViewBag.WeekExpenses)
+            {
+                <div class="expense-card">
+                    <div class="expense-header">
+                        <div class="expense-date-category">
+                            <div class="expense-date">@item.Expense.Date.ToString("dd MMM yyyy")</div>
+                            <div class="expense-category-badge @item.CategoryName.ToLower().Replace(" ", "-")">@item.CategoryName</div>
+                        </div>
+                        <div class="expense-amount">@item.Expense.Amount.ToString("C")</div>
                     </div>
-                    <div class="expense-amount">$45.00</div>
-                </div>
-                <div class="expense-description">Dinner at restaurant</div>
-                <div class="expense-actions">
-                    <button class="action-btn edit"><i class="fas fa-pencil-alt"></i></button>
-                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
-                </div>
-            </div>
-            <div class="expense-card">
-                <div class="expense-header">
-                    <div class="expense-date-category">
-                        <div class="expense-date">02 Jun 2025</div>
-                        <div class="expense-category-badge groceries">Groceries</div>
+                    <div class="expense-description">@item.Expense.Name</div>
+                    <div class="expense-actions">
+                        <button class="action-btn edit" onclick="openEdit()"><i class="fas fa-pencil-alt"></i></button>
+                        <button class="action-btn note" onclick="openNoteModal(@item.Expense.Id)"><i class="fas fa-sticky-note"></i></button>
+                        <button class="action-btn delete" data-id="@item.Expense.Id"><i class="fas fa-trash"></i></button>
                     </div>
-                    <div class="expense-amount">$60.00</div>
                 </div>
-                <div class="expense-description">Weekly shopping</div>
-                <div class="expense-actions">
-                    <button class="action-btn note" onclick="openNoteModal()">
-                        <i class="fas fa-sticky-note"></i>
-                    </button>
-                    <button class="action-btn edit"><i class="fas fa-pencil-alt"></i></button>
-                    <button class="action-btn delete"><i class="fas fa-trash"></i></button>
-                </div>
+            }
 
-            </div>
+            @if (ViewBag.WeekExpenses.Count == 0)
+            {
+                <div class="no-expenses">
+                    No expenses recorded for this week.
+                </div>
+            }
         </div>
     </div>
-    <div class="modal" id="note-modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <h3>Add Note</h3>
-            <form id="note-form">
-                <div class="form-group">
-                    <label for="note-budget">Budget</label>
-                    <input type="number" step="0.01" id="note-budget" required>
-                </div>
-                <div class="form-group">
-                    <label for="note-description">Description</label>
-                    <textarea id="note-description" rows="3"></textarea>
-                </div>
-                <button type="submit" class="btn-primary">Save Note</button>
-            </form>
-        </div>
+</div>
+<div id="noteModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeNoteModal()">&times;</span>
+        <h3>Add/Edit Note</h3>
+        <form id="noteForm">
+            <input type="hidden" id="expenseIdForNote">
+            <div class="form-group">
+                <label for="noteBudget">Budget:</label>
+                <input type="number" step="0.01" min="0.01" id="noteBudget" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="noteDescription">Description:</label>
+                <textarea id="noteDescription" class="form-control" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Note</button>
+        </form>
     </div>
 </div>
 
 <script>
-    // Function to show/hide views
+        
+    function openNoteModal(expenseId) {
+        document.getElementById('expenseIdForNote').value = expenseId;
+        document.getElementById('noteModal').style.display = 'block';
+
+        
+        fetch(`/Home/GetNote?expenseId=${expenseId}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data) {
+                    document.getElementById('noteBudget').value = data.budget;
+                    document.getElementById('noteDescription').value = data.description;
+                }
+            });
+    }
+
+    function closeNoteModal() {
+        document.getElementById('noteModal').style.display = 'none';
+        document.getElementById('noteForm').reset();
+    }
+
+    
+    document.getElementById('noteForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const expenseId = document.getElementById('expenseIdForNote').value;
+        const budget = document.getElementById('noteBudget').value;
+        const description = document.getElementById('noteDescription').value;
+
+        fetch('/Home/SaveNote', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                ExpenseId: expenseId,
+                Budget: budget,
+                Description: description
+            })
+        })
+        .then(response => {
+            if (response.ok) {
+                closeNoteModal();
+                
+                alert('Note saved successfully!');
+            } else {
+                alert('Error saving note');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error saving note');
+        });
+    });
+    
     function showView(viewName) {
         document.querySelectorAll('.view').forEach(view => {
             view.classList.remove('active');
@@ -155,38 +183,55 @@
         event.currentTarget.classList.add('active');
     }
 
-    // Note modal functions
-    function openNoteModal() {
-        document.getElementById('note-modal').style.display = 'block';
-    }
+    
+        document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.delete').forEach(button => {
+            button.addEventListener('click', function() {
+                const expenseCard = this.closest('.expense-card');
+                const expenseId = this.getAttribute('data-id');
 
-    function closeNoteModal() {
-        document.getElementById('note-modal').style.display = 'none';
-    }
-
-    // Close modal when clicking X or outside
-    document.querySelector('.close-modal').addEventListener('click', closeNoteModal);
-    window.addEventListener('click', (event) => {
-        if (event.target === document.getElementById('note-modal')) {
-            closeNoteModal();
-        }
+                if (confirm('Are you sure you want to delete this expense?')) {
+                    deleteExpense(expenseId, expenseCard);
+                }
+            });
+        });
     });
 
-    // Handle form submission
-    document.getElementById('note-form').addEventListener('submit', (e) => {
-        e.preventDefault();
+    function openEdit() {
+        const expenseCard = event.currentTarget.closest('.expense-card');
+        const expenseId = expenseCard.querySelector('.delete').getAttribute('data-id');
+        window.location.href = `/Home/Edit/${expenseId}`;
+    }
 
-        const budget = document.getElementById('note-budget').value;
-        const description = document.getElementById('note-description').value;
+    
+    function deleteExpense(expenseId, expenseCard) {
+            const formData = new FormData();
+    formData.append("id", expenseId);
 
-        // Here you would typically send this data to your server
-        console.log('Note saved:', { budget, description });
+    fetch('Home/Delete', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => {
+            if (response.ok) {
+                
+                expenseCard.remove();
 
-        // Close the modal and reset the form
-        closeNoteModal();
-        e.target.reset();
+                
+                location.reload();
+            } else {
+                alert('Error deleting expense');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error deleting expense');
+        });
+    }
 
-        // Show success message (you could implement this)
-        alert('Note saved successfully!');
-    });
+    
+    function updateTotals() {
+        
+        location.reload();
+    }
 </script>

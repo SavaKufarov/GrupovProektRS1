@@ -500,3 +500,99 @@ media (max-width: 480px) {
     .btn-primary:hover {
         background-color: var(--primary-dark);
     }
+
+.expense-category-badge {
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    width: fit-content;
+}
+
+    .expense-category-badge.food {
+        background-color: #ffebee;
+        color: #c62828;
+    }
+
+    .expense-category-badge.groceries {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+    }
+
+    .expense-category-badge.utilities {
+        background-color: #e3f2fd;
+        color: #1565c0;
+    }
+
+    .expense-category-badge.transportation {
+        background-color: #fff3e0;
+        color: #ef6c00;
+    }
+
+    .expense-category-badge.entertainment {
+        background-color: #f3e5f5;
+        color: #7b1fa2;
+    }
+/* Note Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+    .close:hover {
+        color: black;
+    }
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+
+.form-control {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.btn-primary {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+    .btn-primary:hover {
+        background-color: #45a049;
+    }
